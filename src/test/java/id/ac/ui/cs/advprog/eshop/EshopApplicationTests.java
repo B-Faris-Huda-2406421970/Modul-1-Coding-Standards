@@ -1,13 +1,17 @@
 package id.ac.ui.cs.advprog.eshop;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 class EshopApplicationTests {
 
     @Test
-    void contextLoads() {
+    void testApplication() {
+        assertDoesNotThrow(() -> {
+            EshopApplication.main(new String[] {});
+        });
     }
-
 }
