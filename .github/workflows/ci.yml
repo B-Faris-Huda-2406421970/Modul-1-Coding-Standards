@@ -54,4 +54,4 @@ jobs:
         env:
           KOYEB_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
         run: |
-          koyeb app redeploy modul-1-coding-standards --token $KOYEB_TOKEN
+          koyeb service redeploy fragile-calypso/modul-1-coding-standards --token $KOYEB_TOKEN
