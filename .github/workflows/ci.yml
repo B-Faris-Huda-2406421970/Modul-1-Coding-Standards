@@ -1,8 +1,10 @@
-name: Continuous Integration (CI)
+name: CI/CD Workflow
 
 on:
   push:
+    branches: ["main"]
   pull_request:
+    branches: ["main"]
 
 jobs:
   test-and-analyze:
@@ -25,7 +27,8 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test
 
-      - uses: pmd/pmd-github-action@v2
+      - name: Run PMD analysis
+        uses: pmd/pmd-github-action@v2
         id: pmd
         with:
           version: '6.55.0'
@@ -35,3 +38,20 @@ jobs:
       - name: Fail build if there are violations
         if: steps.pmd.outputs.violations != 0
         run: exit 1
+
+  deploy:
+    name: Deploy to Koyeb
+    needs: test-and-analyze
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Koyeb CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/koyeb/koyeb-cli/master/install.sh | sh
+          echo "/home/runner/.koyeb/bin" >> $GITHUB_PATH
+
+      - name: Trigger redeploy on Koyeb
+        env:
+          KOYEB_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
+        run: |
+          koyeb app redeploy modul-1-coding-standards --token $KOYEB_TOKEN
