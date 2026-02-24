@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Run tests
+    name: Run tests and analysis
     runs-on: ubuntu-22.04
     steps:
       - name: Check out the Git repository
