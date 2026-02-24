@@ -1,6 +1,7 @@
 plugins {
     java
     jacoco
+    pmd
     id("org.springframework.boot") version "3.5.10"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -13,6 +14,13 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+pmd {
+    isConsoleOutput = true
+    toolVersion = "7.0.0"
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+    ruleSets = listOf()
 }
 
 configurations {
@@ -65,6 +73,13 @@ tasks.register<Test>("functionalTest"){
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+}
+
+tasks.withType<Pmd> {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
 
 tasks.test {
