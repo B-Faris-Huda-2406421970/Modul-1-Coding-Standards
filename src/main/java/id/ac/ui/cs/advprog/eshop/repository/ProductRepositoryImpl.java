@@ -28,15 +28,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void delete(String productId){
-        Iterator<Product> iterator = productData.iterator();
-        while (iterator.hasNext()){
-            Product product = iterator.next();
-            if (product.getProductId().equals(productId)){
-                iterator.remove();
-                break;
-            }
-        }
+    public void delete(String productId) {
+        productData.removeIf(product -> product.getProductId().equals(productId));
     }
 
     @Override
