@@ -10,14 +10,10 @@ import java.util.UUID;
 
 @Repository
 public class CarRepository {
-    static int id = 0;
     private List<Car> carData = new ArrayList<>();
 
     public Car create(Car car) {
-        if (car.getCarId() == null) {
-            UUID uuid = UUID.randomUUID();
-            car.setCarId(uuid.toString());
-        }
+        setIDIfNull(car);
         carData.add(car);
         return car;
     }
@@ -36,19 +32,27 @@ public class CarRepository {
     }
 
     public Car update(String id, Car updatedCar) {
-        for (int i = 0; i < carData.size(); i++) {
-            Car car = carData.get(i);
-            if (car.getCarId().equals(id)) {
-                car.setCarName(updatedCar.getCarName());
-                car.setCarColor(updatedCar.getCarColor());
-                car.setCarQuantity(updatedCar.getCarQuantity());
-                return car;
-            }
-        }
-        return null;
+        Car foundCar = findById(id);
+        if (foundCar == null) return null;
+
+        updateCar(foundCar, updatedCar);
+        return foundCar;
     }
 
     public void delete(String id) {
         carData.removeIf(car -> car.getCarId().equals(id));
+    }
+
+    private void setIDIfNull(Car car){
+        if (car.getCarId() == null) {
+            UUID uuid = UUID.randomUUID();
+            car.setCarId(uuid.toString());
+        }
+    }
+
+    private void updateCar(Car car, Car updatedCar){
+        car.setCarName(updatedCar.getCarName());
+        car.setCarColor(updatedCar.getCarColor());
+        car.setCarQuantity(updatedCar.getCarQuantity());
     }
 }
