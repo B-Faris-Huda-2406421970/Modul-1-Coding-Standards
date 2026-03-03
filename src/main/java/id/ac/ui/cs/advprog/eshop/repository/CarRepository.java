@@ -5,9 +5,9 @@ import id.ac.ui.cs.advprog.eshop.model.Car;
 import java.util.Iterator;
 
 public interface CarRepository {
-    public Car create(Car car);
-    public Iterator<Car> findAll();
-    public Car findById(String id);
-    public Car update(String id, Car updatedCar);
-    public void delete(String id);
+    Car create(Car car);
+    Iterator<Car> findAll();
+    Car findById(String id);
+    Car update(String id, Car updatedCar);
+    void delete(String id);
 }
